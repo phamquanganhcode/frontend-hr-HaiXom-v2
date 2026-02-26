@@ -1,0 +1,14 @@
+@import "tailwindcss"; /* Cách viết mới cho các phiên bản gần đây */
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: #F5F5F5;
+}
+
+/* Tùy chỉnh thanh cuộn cho chuyên nghiệp */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #D32F2F;
+  border-radius: 10px;
+}
