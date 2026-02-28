@@ -114,9 +114,7 @@ const EmployeeProfile = () => {
                 icon={<Calendar size={18} className="text-emerald-500" />}
                 label="Loại hợp đồng"
                 value={
-                  data?.employee?.type === "full"
-                    ? "Full-time"
-                    : "Part-time"
+                  data?.employee?.type === "full" ? "Full-time" : "Part-time"
                 }
                 bgColor="bg-emerald-50"
               />
@@ -135,15 +133,52 @@ const EmployeeProfile = () => {
           </div>
 
           {/* Lịch sử thuyên chuyển */}
+          {/* Lịch sử thuyên chuyển */}
           <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-50 min-h-[150px]">
-            <h3 className="text-xs font-black text-slate-800 mb-6 uppercase tracking-wider">
+            <h3 className="text-xs font-black text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2">
               Lịch sử công tác
             </h3>
-            <div className="flex flex-col items-center justify-center py-4 text-center border-2 border-dashed border-slate-50 rounded-2xl">
-              <p className="text-slate-300 text-xs font-medium italic">
-                Chưa có dữ liệu thuyên chuyển cơ sở
-              </p>
-            </div>
+
+            {/* Kiểm tra nếu có dữ liệu trong mảng job_history */}
+            {data?.employee?.job_history &&
+            data?.employee?.job_history.length > 0 ? (
+              <div className="relative pl-6 space-y-6 before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
+                {data.employee.job_history.map((history, index) => (
+                  <div key={history.id || index} className="relative">
+                    {/* Điểm mốc trên trục thời gian */}
+                    <div className="absolute -left-[23px] top-1.5 w-3 h-3 rounded-full border-2 border-white bg-indigo-500 shadow-sm"></div>
+
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-1">
+                      <div>
+                        <p className="text-sm font-black text-slate-800">
+                          {history.branch_name || "Chi nhánh chưa xác định"}
+                        </p>
+                        <p className="text-[11px] font-bold text-indigo-500 uppercase">
+                          {history.position_name || "Vị trí chuyên môn chưa xác định"}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+                          {history.start_date || "---"}
+                          <span className="mx-1 text-slate-300">→</span>
+                          {history.end_date || "Hiện tại"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Hiển thị khi không có dữ liệu */
+              <div className="flex flex-col items-center justify-center py-8 text-center border-2 border-dashed border-slate-50 rounded-2xl">
+                <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                  <Calendar size={20} className="text-slate-200" />
+                </div>
+                <p className="text-slate-400 text-xs font-bold italic">
+                  Chưa có dữ liệu thuyên chuyển cơ sở 
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
