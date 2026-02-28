@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Loader2, Bell, LayoutDashboard, X } from 'lucide-react';
 import attendanceApi from '../../../api/attendanceApi';
+import authApi from '../../../api/authApi'; // ✅ ĐÃ THÊM DÒNG NÀY ĐỂ HẾT LỖI
 import EmployeeSidebar from './EmployeeSidebar';
 import EmployeeBottomNav from './EmployeeBottomNav';
 
