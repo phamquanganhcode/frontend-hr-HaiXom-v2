@@ -15,16 +15,16 @@ const EmployeeProfile = () => {
   const { data } = useOutletContext();
   const navigate = useNavigate();
 
- const handleLogout = () => {
-  // 1. Xóa Token và dữ liệu đã lưu (tùy vào cách bạn lưu trữ)
-  localStorage.removeItem('token'); 
-  localStorage.removeItem('user_data');
-  sessionStorage.clear(); // Xóa sạch session nếu có
+  const handleLogout = () => {
+    // 1. Xóa Token và dữ liệu đã lưu (tùy vào cách bạn lưu trữ)
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_data");
+    sessionStorage.clear(); // Xóa sạch session nếu có
 
-  // 2. Điều hướng về trang login và XÓA lịch sử trang cũ
-  // replace: true sẽ ghi đè trang Profile bằng trang Login trong lịch sử trình duyệt
-  navigate('/login', { replace: true });
-};
+    // 2. Điều hướng về trang login và XÓA lịch sử trang cũ
+    // replace: true sẽ ghi đè trang Profile bằng trang Login trong lịch sử trình duyệt
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="max-w-5xl mx-auto md:pt-8 md:px-6 space-y-6 pb-24 md:pb-12">
@@ -44,40 +44,43 @@ const EmployeeProfile = () => {
               <div className="text-center md:text-left pb-4 md:pb-6 flex-1">
                 <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2">
                   <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
-                    {data?.employee?.name || "Nguyễn Văn Trường"}
+                    {/* Cập nhật theo cột full_name trong ảnh CSDL */}
+                    {data?.employee?.full_name || "Chưa cập nhật tên"}
                   </h2>
                 </div>
 
                 <div className="flex flex-wrap justify-center md:justify-start gap-3">
                   <div>
+                    {/* Cập nhật theo cột status trong ảnh CSDL */}
                     {data?.employee?.status === "active" ? (
-                      /* Trạng thái: Đang làm việc */
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase rounded-lg border border-emerald-100 shadow-sm">
                         <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
                         Đang làm việc
                       </span>
                     ) : (
-                      /* Trạng thái: Đã nghỉ việc / Tạm nghỉ */
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 text-rose-600 text-[10px] font-black uppercase rounded-lg border border-rose-100 shadow-sm">
                         <span className="w-1.5 h-1.5 bg-rose-500 rounded-full"></span>
-                        Nghỉ việc
+                        {data?.employee?.status || "Chưa hiển thị"}
                       </span>
                     )}
                   </div>
                   <div className="flex items-center gap-1.5 bg-slate-50/80 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm">
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                      Mã số:
+                      Mã nhân viên:
                     </span>
                     <span className="text-[11px] font-black text-indigo-600 uppercase">
-                      {data?.employee?.code || "NV8892"}
+                      {/* Cập nhật theo cột employee_code trong ảnh CSDL */}
+                      {data?.employee?.employee_code || "Chưa hiển thị"}
                     </span>
                   </div>
+
                   <div className="flex items-center gap-1.5 bg-slate-50/80 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm">
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
                       Vai trò:
                     </span>
                     <span className="text-[11px] font-black text-slate-700 uppercase">
-                      Nhân viên
+                      {/* Cập nhật theo cột role trong ảnh CSDL */}
+                      {data?.employee?.role || "Chưa hiển thị"}
                     </span>
                   </div>
                 </div>
@@ -103,21 +106,29 @@ const EmployeeProfile = () => {
               <InfoRow
                 icon={<MapPin size={18} className="text-purple-500" />}
                 label="Cơ sở làm việc"
-                value={data?.employee?.position || "Đại học Thủy Lợi"}
+                value={data?.employee?.branch_name || "Chưa hiển thị"}
                 bgColor="bg-purple-50"
               />
               <div className="h-[1px] bg-slate-50 my-1 ml-14"></div>
               <InfoRow
                 icon={<Calendar size={18} className="text-emerald-500" />}
-                label="Ngày bắt đầu"
-                value={data?.employee?.joinDate || "15/05/2024"}
+                label="Loại hợp đồng"
+                value={
+                  data?.employee?.type === "full"
+                    ? "Full-time"
+                    : "Part-time"
+                }
                 bgColor="bg-emerald-50"
               />
               <div className="h-[1px] bg-slate-50 my-1 ml-14"></div>
               <InfoRow
                 icon={<DollarSign size={18} className="text-amber-500" />}
                 label="Lương cơ bản / Giờ"
-                value={`${data?.stats?.estimatedSalary || "35.000"}đ`}
+                value={
+                  data?.employee?.base_salary
+                    ? `${Number(data?.employee?.base_salary).toLocaleString()}đ`
+                    : "Chưa hiển thị"
+                }
                 bgColor="bg-amber-50"
               />
             </div>
@@ -144,23 +155,23 @@ const EmployeeProfile = () => {
               Liên hệ hệ thống
             </h3>
             <div className="space-y-4">
-              {/* Hiển thị Số điện thoại thực tế */}
               <div className="flex items-center gap-3 group">
                 <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-500 transition-colors">
                   <Phone size={14} />
                 </div>
                 <span className="text-sm font-bold text-slate-600">
-                  {data?.employee?.phone || "0987 765 268"}
+                  {/* Cập nhật theo cột phonenumber trong ảnh CSDL */}
+                  {data?.employee?.phonenumber || "Chưa cập nhật SĐT"}
                 </span>
               </div>
 
-              {/* Hiển thị Email thực tế */}
               <div className="flex items-center gap-3 group">
                 <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-500 transition-colors">
                   <Mail size={14} />
                 </div>
                 <span className="text-sm font-bold text-slate-600 truncate">
-                  {data?.employee?.email || "example@haixom.com"}
+                  {/* Cập nhật theo cột email trong ảnh CSDL */}
+                  {data?.employee?.email || "Chưa cập nhật Email"}
                 </span>
               </div>
             </div>
