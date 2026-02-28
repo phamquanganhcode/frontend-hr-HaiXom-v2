@@ -13,16 +13,15 @@ const EmployeeLayout = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        // 1. GỌI ĐÚNG API LẤY PROFILE MÀ CHÚNG TA ĐÃ LÀM Ở BACKEND
-        // Giả sử trong file authApi.js của bạn hàm này tên là getMe hoặc me
-        const response = await authApi.me(); 
+        // 1. Gọi đúng tên hàm getMe() từ authApi
+        const response = await authApi.getMe(); 
         
-        // 2. LƯU VÀO STATE
-        // Tùy thuộc vào axiosClient của bạn có tự bóc .data hay không. 
-        // Nếu API trả về { status: "success", data: { employee: {...} } } thì ta lấy response.data
+        // 2. Lấy dữ liệu và lưu vào State
+        // Vì Backend trả về cục JSON bọc trong "data", ta bóc nó ra
         const actualData = response.data ? response.data : response;
         setData(actualData);
 
@@ -37,6 +36,7 @@ const EmployeeLayout = () => {
         setLoading(false);
       }
     };
+    
     fetchInitialData();
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
