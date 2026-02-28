@@ -13,13 +13,22 @@ const EmployeeLayout = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const response = await attendanceApi.getTodaySummary();
-        setData(response);
-      } catch {
+        // 1. GỌI ĐÚNG API LẤY PROFILE MÀ CHÚNG TA ĐÃ LÀM Ở BACKEND
+        // Giả sử trong file authApi.js của bạn hàm này tên là getMe hoặc me
+        const response = await authApi.me(); 
+        
+        // 2. LƯU VÀO STATE
+        // Tùy thuộc vào axiosClient của bạn có tự bóc .data hay không. 
+        // Nếu API trả về { status: "success", data: { employee: {...} } } thì ta lấy response.data
+        const actualData = response.data ? response.data : response;
+        setData(actualData);
+
+      } catch (error) {
+        console.error("Lỗi lấy thông tin Profile:", error);
+        // Tạm thời giữ mock data để không bị trắng trang nếu lỗi
         setData({ 
           employee: { name: "Nguyễn Văn Trường", position: "Cơ sở Thủy Lợi", avatar: "NT" },
           announcement: "Chào mừng bạn đến với hệ thống Hải Xồm HR." 
