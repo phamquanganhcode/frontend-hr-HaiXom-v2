@@ -105,7 +105,7 @@ const EmployeeLayout = () => {
         <header className="hidden md:flex bg-white border-b p-4 px-8 justify-between items-center sticky top-0 z-30">
           <div>
             <h2 className="text-lg font-bold text-slate-800">{getPageTitle()}</h2>
-            <p className="text-xs text-slate-400 font-medium italic">Chào mừng trở lại, {data?.employee?.name}!</p>
+            <p className="text-xs text-slate-400 font-medium italic">Chào mừng trở lại, {data?.employee?.fullname}!</p>
           </div>
           
           <div className="flex items-center gap-6">
