@@ -32,7 +32,7 @@ const EmployeeSidebar = ({ userData }) => {
           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-xs font-bold text-slate-800 truncate">{userData?.name}</h2>
+          <h2 className="text-xs font-bold text-slate-800 truncate">{userData?.full_name}</h2>
           <p className="text-[9px] text-slate-400 truncate uppercase font-semibold">{userData?.position}</p>
         </div>
       </div>
